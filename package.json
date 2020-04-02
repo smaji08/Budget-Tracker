@@ -7,7 +7,6 @@
     "prestart": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "postinstall": "npm run build",
     "lite-server": "lite-server"
   },
   "repository": {
@@ -25,12 +24,13 @@
     "express": "^4.17.1",
     "lite-server": "^2.5.3",
     "mongoose": "^5.5.15",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "webpack-pwa-manifest": "^4.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
     "babel-loader": "^8.1.0",
-    "webpack-pwa-manifest": "^4.2.0"
+    
   }
 }
