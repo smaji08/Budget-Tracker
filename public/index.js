@@ -1,18 +1,45 @@
 let transactions = [];
 let myChart;
 
+loadPage();
+
+function loadPage(){
+  useIndexedDB("budgetDB","trasactStore", "get").then(results => {
+    console.log(results);
+    if (results.length > 0){
+      fetch("/api/transaction/bulk", {
+        method: "POST",
+        body: JSON.stringify(results),
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => {    
+        return response.json();
+      });
+      useIndexedDB("budgetDB","trasactStore", "clear");
+    }
+  });
+  renderTransaction();
+}
+
+function renderTransaction(){
 fetch("/api/transaction")
   .then(response => {
+    console.log(response);
     return response.json();
   })
   .then(data => {
+    
     // save db data on global variable
     transactions = data;
-
+    
     populateTotal();
     populateTable();
     populateChart();
   });
+}
 
 function populateTotal() {
   // reduce transaction amounts to a single total value
@@ -137,11 +164,54 @@ function sendTransaction(isAdding) {
   .catch(err => {
     // fetch failed, so save in indexed db
     console.log("am here");
-    saveRecord(transaction);
+    useIndexedDB("budgetDB","trasactStore", "add", transaction);
 
     // clear form
     nameEl.value = "";
     amountEl.value = "";
+  });
+}
+
+function useIndexedDB(databaseName, storeName, method, object){
+  return new Promise((resolve, reject) => {
+    const request = window.indexedDB.open(databaseName);
+    let db,
+      tx,
+      store;
+
+    request.onupgradeneeded = function(e) {
+      const db = request.result;
+      db.createObjectStore(storeName, { autoIncrement : true });
+    };
+
+    request.onerror = function(e) {
+      console.log("There was an error");
+    };
+
+    request.onsuccess = function(e) {
+      db = request.result;
+      tx = db.transaction(storeName, "readwrite");
+      store = tx.objectStore(storeName);
+
+      db.onerror = function(e) {
+        console.log("error");
+      };
+      if (method === "add") {
+        store.add(object);
+      }
+      if (method === "get") {
+        const all = store.getAll();
+        all.onsuccess = function() {
+          resolve(all.result);
+        };
+      }
+      if (method === "clear"){
+        store.clear();
+      }
+      tx.oncomplete = function() {
+        db.close();
+      };
+    };
   });
 }
 
