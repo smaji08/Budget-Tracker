@@ -27,7 +27,6 @@ function loadPage(){
 function renderTransaction(){
 fetch("/api/transaction")
   .then(response => {
-    console.log(response);
     return response.json();
   })
   .then(data => {
@@ -163,7 +162,6 @@ function sendTransaction(isAdding) {
   })
   .catch(err => {
     // fetch failed, so save in indexed db
-    console.log("am here");
     useIndexedDB("budgetDB","trasactStore", "add", transaction);
 
     // clear form

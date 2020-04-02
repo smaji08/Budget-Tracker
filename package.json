@@ -4,10 +4,10 @@
   "description": "Budget Tracker application to allow for offline access and functionality",
   "main": "server.js",
   "scripts": {
-    "webpack": "webpack",
-    "prestart": "npm run webpack",
+    "prestart": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
+    "postinstall": "npm run build",
     "lite-server": "lite-server"
   },
   "repository": {
