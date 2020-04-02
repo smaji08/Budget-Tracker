@@ -4,7 +4,7 @@
   "description": "Budget Tracker application to allow for offline access and functionality",
   "main": "server.js",
   "scripts": {
-    "prestart": "webpack",
+    "webpack": "webpack",
     "build": "node node_modules/webpack/bin/webpack.js --display-error-details",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
