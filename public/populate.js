@@ -1,4 +1,6 @@
-import { myChart, transactions } from "./domMethods";
+import { transactions } from "./API";
+
+let myChart;
 
 export function populateTotal() {
     // reduce transaction amounts to a single total value

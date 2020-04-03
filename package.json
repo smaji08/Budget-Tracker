@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "webpack": "webpack",
+    "prestart": "webpack",
     "build": "node node_modules/webpack/bin/webpack.js --display-error-details",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",

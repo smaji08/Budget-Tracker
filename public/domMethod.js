@@ -1,9 +1,6 @@
 import { populateTotal, populateTable, populateChart } from "./populate";
-import { saveTransaction } from "./API";
 import { useIndexedDB } from "./indexedDB";
-
-export let transactions = [];
-export let myChart;
+import { transactions } from "./API";
 
 export function sendTransaction(isAdding) {
     let nameEl = document.querySelector("#t-name");
@@ -40,8 +37,19 @@ export function sendTransaction(isAdding) {
     populateTotal();
     
     // also send to server
-    saveTransaction(transaction)
+    fetch("/api/transaction", {
+      method: "POST",
+      body: JSON.stringify(transaction),
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => {    
+      return response.json();
+    })
     .then(data => {
+      console.log(data);
       if (data.errors) {
         errorEl.textContent = "Missing Information";
       }
@@ -60,11 +68,3 @@ export function sendTransaction(isAdding) {
       amountEl.value = "";
     });
   }
-  
-  document.querySelector("#add-btn").onclick = function() {
-    sendTransaction(true);
-  };
-  
-  document.querySelector("#sub-btn").onclick = function() {
-    sendTransaction(false);
-  };

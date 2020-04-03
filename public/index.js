@@ -1,5 +1,6 @@
-import { useIndexedDB, checkForIndexedDb } from "./indexedDB";
-import { saveTransaction, savefromIndexedDB, renderTransaction } from "./API";
+import { checkForIndexedDb, useIndexedDB } from "./indexedDB";
+import { savefromIndexedDB, renderTransaction } from "./API";
+import { sendTransaction } from "./domMethod";
 
 loadPage();
 
@@ -13,5 +14,13 @@ function loadPage(){
       }
     });
     renderTransaction();
-  }
+  } 
 }
+
+document.querySelector("#add-btn").onclick = function() {
+  sendTransaction(true);
+};
+
+document.querySelector("#sub-btn").onclick = function() {
+  sendTransaction(false);
+};
